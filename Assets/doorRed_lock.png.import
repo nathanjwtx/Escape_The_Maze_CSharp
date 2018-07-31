@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/doorRed_lock.png-44bddad04685666d5f5b48832ae6287d.stex"
+path="res://.import/doorRed_lock.png-d2fc09b40aa7f229c51896fab082b150.stex"
 
 [deps]
 
-source_file="res://assets/doorRed_lock.png"
-dest_files=[ "res://.import/doorRed_lock.png-44bddad04685666d5f5b48832ae6287d.stex" ]
+source_file="res://Assets/doorRed_lock.png"
+dest_files=[ "res://.import/doorRed_lock.png-d2fc09b40aa7f229c51896fab082b150.stex" ]
 
 [params]
 

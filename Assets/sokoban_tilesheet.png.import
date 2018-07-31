@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/sokoban_tilesheet.png-40f1029de4e6a234f19e812d6ab0e52a.stex"
+path="res://.import/sokoban_tilesheet.png-c7945e40f563472a10588f58bcfeec7e.stex"
 
 [deps]
 
-source_file="res://assets/sokoban_tilesheet.png"
-dest_files=[ "res://.import/sokoban_tilesheet.png-40f1029de4e6a234f19e812d6ab0e52a.stex" ]
+source_file="res://Assets/sokoban_tilesheet.png"
+dest_files=[ "res://.import/sokoban_tilesheet.png-c7945e40f563472a10588f58bcfeec7e.stex" ]
 
 [params]
 

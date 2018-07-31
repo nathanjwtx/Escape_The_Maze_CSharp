@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/keyGreen.png-72238461a208ef4c0cb79119cd6df8fc.stex"
+path="res://.import/keyGreen.png-9bc5a16029c5cf4577c194dcdf0c638e.stex"
 
 [deps]
 
-source_file="res://assets/keyGreen.png"
-dest_files=[ "res://.import/keyGreen.png-72238461a208ef4c0cb79119cd6df8fc.stex" ]
+source_file="res://Assets/keyGreen.png"
+dest_files=[ "res://.import/keyGreen.png-9bc5a16029c5cf4577c194dcdf0c638e.stex" ]
 
 [params]
 
