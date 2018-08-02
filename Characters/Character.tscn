@@ -14,7 +14,7 @@ length = 1.0
 loop = false
 step = 0.2
 tracks/0/type = "value"
-tracks/0/path = NodePath(".:frame")
+tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -33,7 +33,7 @@ length = 1.0
 loop = false
 step = 0.2
 tracks/0/type = "value"
-tracks/0/path = NodePath(".:frame")
+tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -52,7 +52,7 @@ length = 1.0
 loop = false
 step = 0.2
 tracks/0/type = "value"
-tracks/0/path = NodePath(".:frame")
+tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -71,7 +71,7 @@ length = 1.0
 loop = false
 step = 0.2
 tracks/0/type = "value"
-tracks/0/path = NodePath(".:frame")
+tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -80,10 +80,10 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.2, 0.4, 0.6, 0.8 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 15, 16, 17, 18, 19 ]
+"values": [ 15, 15, 16, 17, 18 ]
 }
 
-[node name="Character" type="Area2D" index="0"]
+[node name="Character" type="Area2D"]
 
 input_pickable = true
 gravity_vec = Vector2( 0, 1 )
@@ -97,15 +97,14 @@ _sections_unfolded = [ "Animation" ]
 __meta__ = {
 "_edit_group_": true
 }
+Speed = 0
 
-[node name="Sprite" type="Sprite" parent="." index="0"]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." index="1"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." index="0"]
 
 shape = SubResource( 1 )
 _sections_unfolded = [ "Material", "Transform", "Visibility" ]
 
-[node name="MoveTween" type="Tween" parent="." index="2"]
+[node name="MoveTween" type="Tween" parent="." index="1"]
 
 repeat = false
 playback_process_mode = 1
@@ -114,7 +113,35 @@ playback/active = false
 playback/repeat = false
 playback/speed = 1.0
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="3"]
+[node name="RayCastRight" type="RayCast2D" parent="." index="2"]
+
+enabled = true
+exclude_parent = true
+cast_to = Vector2( 64, 0 )
+collision_mask = 1
+
+[node name="RayCastLeft" type="RayCast2D" parent="." index="3"]
+
+enabled = true
+exclude_parent = true
+cast_to = Vector2( -64, 0 )
+collision_mask = 1
+
+[node name="RayCastDown" type="RayCast2D" parent="." index="4"]
+
+enabled = true
+exclude_parent = true
+cast_to = Vector2( 0, 64 )
+collision_mask = 1
+
+[node name="RayCastUp" type="RayCast2D" parent="." index="5"]
+
+enabled = true
+exclude_parent = true
+cast_to = Vector2( 0, 50 )
+collision_mask = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="6"]
 
 root_node = NodePath("..")
 autoplay = ""
@@ -127,32 +154,13 @@ anims/right = SubResource( 4 )
 anims/up = SubResource( 5 )
 blend_times = [  ]
 
-[node name="RayCastRight" type="RayCast2D" parent="." index="4"]
+[node name="Sprite" type="Sprite" parent="." index="7"]
 
-enabled = true
-exclude_parent = true
-cast_to = Vector2( 64, 0 )
-collision_mask = 1
+vframes = 4
+hframes = 5
+frame = 19
+_sections_unfolded = [ "Animation" ]
 
-[node name="RayCastLeft" type="RayCast2D" parent="." index="5"]
-
-enabled = true
-exclude_parent = true
-cast_to = Vector2( -64, 0 )
-collision_mask = 1
-
-[node name="RayCastDown" type="RayCast2D" parent="." index="6"]
-
-enabled = true
-exclude_parent = true
-cast_to = Vector2( 0, 64 )
-collision_mask = 1
-
-[node name="RayCastUp" type="RayCast2D" parent="." index="7"]
-
-enabled = true
-exclude_parent = true
-cast_to = Vector2( 0, 50 )
-collision_mask = 1
+[connection signal="tween_completed" from="MoveTween" to="." method="_on_MoveTween_tween_completed"]
 
 
