@@ -1,6 +1,7 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://Characters/Objects/Pickup.cs" type="Script" id=1]
+[ext_resource path="res://Objects/Pickup.cs" type="Script" id=1]
+
 
 [sub_resource type="RectangleShape2D" id=1]
 
@@ -36,5 +37,7 @@ playback_speed = 1.0
 playback/active = false
 playback/repeat = false
 playback/speed = 1.0
+
+[connection signal="tween_completed" from="Tween" to="." method="_on_Tween_tween_completed"]
 
 
