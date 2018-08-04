@@ -26,7 +26,7 @@ public class Player : Character
             {
                 if (Move(move))
                 {
-                    EmitSignal("moved");
+                    EmitSignal("Moved");
                 }
             }
         }

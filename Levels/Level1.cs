@@ -6,35 +6,36 @@ using Array = Godot.Array;
 
 public class Level1 : Node2D
 {
-    [Export] public PackedScene Enemy;
-    [Export] public PackedScene Pickup;
+    [Export] public PackedScene EnemyScene;
+    [Export] public PackedScene PickupScene;
 
-    private TileMap _items;
+    private static TileMap _items;
     private TileMap _ground;
+    private TileMap _walls;
     private Random _random;
     private int cellID;
     private List<Vector2> _doors = new List<Vector2>();
-    private Player _player;
+    private Player _player = new Player();
     
     public override void _Ready()
     {
+        _player = GetNode<Player>("Player");
         _items = GetNode<TileMap>("Items");
         _ground = GetNode<TileMap>("Ground");
         _random = new Random();
         _items.Hide();
         SetCameraLimits();
-        TileMap walls = GetNode<TileMap>("Walls");
-        var doorID = walls.TileSet.FindTileByName("door_red");
-        GD.Print(doorID);
-        foreach (Vector2 cell in walls.GetUsedCellsById(doorID))
+        _walls = GetNode<TileMap>("Walls");
+        var doorID = _walls.TileSet.FindTileByName("door_red");
+        foreach (Vector2 cell in _walls.GetUsedCellsById(doorID))
         {
             _doors.Add(cell);
         }
 
         SpawnItems();
-        _player.Connect("dead", _player, "GameOver");
-        _player.Connect("GrabbedKey", _player, "_on_Player_Grabbed_Key");
-        _player.Connect("win", _player, "_on_Player_win");
+//        _player.Connect("dead", _player, "GameOver");
+//        _player.Connect("GrabbedKey", _player, "_on_Player_Grabbed_Key");
+//        _player.Connect("win", _player, "_on_Player_win");
     }
 
     private void SetCameraLimits()
@@ -47,10 +48,56 @@ public class Level1 : Node2D
         _player.GetNode<Camera2D>("Camera2D").LimitBottom = Convert.ToInt32(mapSize.End.x * cellSize.x);
     }
 
-    private static void SpawnItems()
+    private void SpawnItems()
     {
-        
+        foreach (Vector2 cell in _items.GetUsedCells())
+        {
+            int id = _items.GetCellv(cell);
+            string cellType = _items.TileSet.TileGetName(id);
+            Vector2 pos = _items.MapToWorld(cell) + _items.CellSize / 2;
+            switch (cellType)
+            {
+                    case "slime_spawn":
+                        var s = (Enemy) EnemyScene.Instance();
+                        s.Position = pos;
+                        s.TileSize = 64;
+                        AddChild(s);
+                        break;
+                    case "player_spawn":
+//                        _player.Position = pos;
+                        break;
+                    case "coin": case "key_red": case "star":
+                        Pickup p = (Pickup) PickupScene.Instance();
+                        
+//                        var p = new Pickup();
+                        p.Init(cellType, pos);
+                        AddChild(p);
+                        break;
+                    default:
+                        break;
+            }
+        }
     }
+
+//    private void GameOver()
+//    {
+//        return;
+//    }
+//
+//    private void _on_Player_win()
+//    {
+//        return;
+//        ;
+//    }
+
+    private void _on_Player_grabbed_key()
+    {
+        foreach (var door in _doors)
+        {
+            _walls.SetCellv(door, -1);
+        }
+    }
+    
 //    public override void _Process(float delta)
 //    {
 //        // Called every frame. Delta is time since last frame.

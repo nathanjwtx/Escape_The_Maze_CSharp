@@ -11,22 +11,23 @@ public class Pickup : Area2D
     };
 
     private Tween _tween;
-    private Sprite _sprite;
+    private Sprite _sprite = new Sprite();
+    private Texture _texture;
 
     public override void _Ready()
     {
         _tween = GetNode<Tween>("Tween");
-        _sprite = GetNode<Sprite>("Sprite");
+//        _sprite = GetNode<Sprite>("PickupSprite");
         _tween.InterpolateProperty(_sprite, "scale", new Vector2(1, 1), new Vector2(3, 2), 0.5f,
             Tween.TransitionType.Quad, Tween.EaseType.InOut);
         _tween.InterpolateProperty(_sprite, "modulate", new Color(1.0f, 1.0f, 1.0f),
             new Color(1.0f, 1.0f, 1.0f, 0.0f), 0.5f, Tween.TransitionType.Quad, Tween.EaseType.InOut);
     }
 
-    private void Init(string textType, Vector2 pos)
+    public void Init(string textType, Vector2 pos)
     {
-        _sprite.Texture = (Texture) ResourceLoader.Load(Textures[textType], "texture");
-//        GD.Load()
+        _texture = (Texture) GD.Load(Textures[textType]);
+        _sprite.Texture = _texture;
         Position = pos;
     }
 

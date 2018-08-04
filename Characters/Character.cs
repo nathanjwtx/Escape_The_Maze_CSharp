@@ -6,7 +6,7 @@ public class Character : Area2D
 {
     [Export] public int Speed;
 
-    private int _tileSize = 64;
+    public int TileSize = 64;
     protected bool CanMove = true;
     protected string Facing = "right";
     private Tween _moveTween;
@@ -45,7 +45,7 @@ public class Character : Area2D
         }
         _player.Play(Facing);
         _moveTween = GetNode<Tween>("MoveTween");
-        _moveTween.InterpolateProperty(this, "position", Position, Position + _moves[Facing] * _tileSize, 
+        _moveTween.InterpolateProperty(this, "position", Position, Position + _moves[Facing] * TileSize, 
             Convert.ToSingle(1.0 / Speed), Tween.TransitionType.Sine, Tween.EaseType.InOut);
         _moveTween.Start();
         return true;
