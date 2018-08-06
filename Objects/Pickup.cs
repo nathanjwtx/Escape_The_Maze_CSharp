@@ -12,7 +12,7 @@ public class Pickup : Area2D
 
     private Tween _tween;
     private Sprite _sprite = new Sprite();
-    private Texture _texture;
+    public Texture _texture;
 
     public override void _Ready()
     {
@@ -27,7 +27,7 @@ public class Pickup : Area2D
     public void Init(string textType, Vector2 pos)
     {
         _texture = (Texture) GD.Load(Textures[textType]);
-        _sprite.Texture = _texture;
+        GetNode<Sprite>("PickupSprite").Texture = _texture;
         Position = pos;
     }
 

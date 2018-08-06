@@ -15,7 +15,7 @@ public class Level1 : Node2D
     private Random _random;
     private int cellID;
     private List<Vector2> _doors = new List<Vector2>();
-    private Player _player = new Player();
+    private Player _player;
     
     public override void _Ready()
     {
@@ -33,9 +33,9 @@ public class Level1 : Node2D
         }
 
         SpawnItems();
-//        _player.Connect("dead", _player, "GameOver");
-//        _player.Connect("GrabbedKey", _player, "_on_Player_Grabbed_Key");
-//        _player.Connect("win", _player, "_on_Player_win");
+        _player.Connect("Dead", _player, "GameOver");
+        _player.Connect("GrabbedKey", _player, "_on_Player_Grabbed_Key");
+        _player.Connect("Win", _player, "_on_Player_win");
     }
 
     private void SetCameraLimits()
@@ -60,16 +60,15 @@ public class Level1 : Node2D
                     case "slime_spawn":
                         var s = (Enemy) EnemyScene.Instance();
                         s.Position = pos;
-                        s.TileSize = 64;
+                        s.TileSize = Convert.ToInt32(_items.CellSize.x);
                         AddChild(s);
                         break;
                     case "player_spawn":
-//                        _player.Position = pos;
+                        _player.Position = pos;
+                        _player.TileSize = 64;
                         break;
                     case "coin": case "key_red": case "star":
                         Pickup p = (Pickup) PickupScene.Instance();
-                        
-//                        var p = new Pickup();
                         p.Init(cellType, pos);
                         AddChild(p);
                         break;
@@ -79,16 +78,16 @@ public class Level1 : Node2D
         }
     }
 
-//    private void GameOver()
-//    {
-//        return;
-//    }
-//
-//    private void _on_Player_win()
-//    {
-//        return;
-//        ;
-//    }
+    private void GameOver()
+    {
+        return;
+    }
+
+    private void _on_Player_win()
+    {
+        return;
+        ;
+    }
 
     private void _on_Player_grabbed_key()
     {
