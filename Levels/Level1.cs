@@ -42,10 +42,10 @@ public class Level1 : Node2D
     {
         Rect2 mapSize = _ground.GetUsedRect();
         Vector2 cellSize = _ground.CellSize;
-        _player.GetNode<Camera2D>("Camera2D").LimitLeft = Convert.ToInt32(mapSize.Position.x * cellSize.x);
-        _player.GetNode<Camera2D>("Camera2D").LimitTop = Convert.ToInt32(mapSize.Position.y * cellSize.y);
-        _player.GetNode<Camera2D>("Camera2D").LimitRight = Convert.ToInt32(mapSize.End.x * cellSize.x);
-        _player.GetNode<Camera2D>("Camera2D").LimitBottom = Convert.ToInt32(mapSize.End.x * cellSize.x);
+        _player.GetNode<Camera2D>("Camera2D").LimitLeft = Convert.ToInt32(mapSize.Position.x * cellSize.x - cellSize.x);
+        _player.GetNode<Camera2D>("Camera2D").LimitTop = Convert.ToInt32(mapSize.Position.y * cellSize.y - cellSize.x);
+        _player.GetNode<Camera2D>("Camera2D").LimitRight = Convert.ToInt32(mapSize.End.x * cellSize.x + cellSize.x);
+        _player.GetNode<Camera2D>("Camera2D").LimitBottom = Convert.ToInt32(mapSize.End.x * cellSize.x + cellSize.x);
     }
 
     private void SpawnItems()

@@ -51,9 +51,10 @@ public class Character : Area2D
         CanMove = false;
         _player.Play(Facing);
         _moveTween = GetNode<Tween>("MoveTween");
-        _moveTween.InterpolateProperty(this, "position", Position, Position + _moves[Facing] * TileSize, 
-            Convert.ToSingle(1.0 / Speed), Tween.TransitionType.Sine, Tween.EaseType.InOut);
-        _moveTween.Start();
+//        _moveTween.InterpolateProperty(this, "position", Position, Position + _moves[Facing] * TileSize, 
+//            Convert.ToSingle(1.0 / Speed), Tween.TransitionType.Sine, Tween.EaseType.InOut);
+//        _moveTween.Start();
+        Position = Position + _moves[Facing] * TileSize;
         return true;
     }
     

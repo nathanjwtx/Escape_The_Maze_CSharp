@@ -37,22 +37,22 @@ public class Player : Character
         var a = (Node2D) area;
         if (a.IsInGroup("enemies"))
         {
-            EmitSignal("dead");
+            EmitSignal("Dead");
         }
 
         if (a.IsInGroup("Pickup"))
         {
-            EmitSignal("pickup");
+            EmitSignal("Pickup");
         }
 
         if (area.GetClass() == "KeyRed")
         {
-            EmitSignal("grabbed_key");
+            EmitSignal("GrabbedKey");
         }
 
         if (area.GetClass() == "star")
         {
-            EmitSignal("win");
+            EmitSignal("Win");
         }
     }
 }
