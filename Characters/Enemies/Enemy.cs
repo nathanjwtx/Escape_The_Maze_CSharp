@@ -10,6 +10,7 @@ public class Enemy : Character
 
     public override void _Ready()
     {
+        base._Ready();
         _spawn = GetNode<Timer>("SpawnTimer");
         _random = new Random();
         CanMove = false;
@@ -21,10 +22,6 @@ public class Enemy : Character
 
         Facing = _moveKeys[_random.Next(0, _moveKeys.Count)];
         _spawn.Start();
-        if (_spawn.TimeLeft <= 0)
-        {
-            CanMove = true;
-        }
     }
 
     // move this code to regular method then link to a player emiited signal for turn-based goodness
@@ -37,6 +34,14 @@ public class Enemy : Character
             {
                 Facing = _moveKeys[_random.Next(0, _moveKeys.Count)];
             }
+
+            CanMove = false;
         }   
     }
+    
+    private void _on_SpawnTimer_timeout()
+    {
+        CanMove = true;
+    }
 }
+

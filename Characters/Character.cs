@@ -23,6 +23,11 @@ public class Character : Area2D
 
     public override void _Ready()
     {
+        MakeRayCast();
+    }
+
+    private void MakeRayCast()
+    {
         Raycasts = new Dictionary<string, RayCast2D>
         {
             {"right", GetNode<RayCast2D>("RayCastRight")},
@@ -30,9 +35,8 @@ public class Character : Area2D
             {"up", GetNode<RayCast2D>("RayCastUp")},
             {"down", GetNode<RayCast2D>("RayCastDown")}
         };
-
     }
-
+    
     public bool Move(string dir)
     {
         AnimationPlayer _player;
@@ -43,6 +47,8 @@ public class Character : Area2D
         {
             return false;
         }
+
+        CanMove = false;
         _player.Play(Facing);
         _moveTween = GetNode<Tween>("MoveTween");
         _moveTween.InterpolateProperty(this, "position", Position, Position + _moves[Facing] * TileSize, 

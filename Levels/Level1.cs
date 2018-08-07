@@ -19,7 +19,7 @@ public class Level1 : Node2D
     
     public override void _Ready()
     {
-        _player = GetNode<Player>("Player");
+        _player = GetNode<Player>("PlayerOne");
         _items = GetNode<TileMap>("Items");
         _ground = GetNode<TileMap>("Ground");
         _random = new Random();
