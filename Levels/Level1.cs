@@ -80,13 +80,14 @@ public class Level1 : Node2D
 
     private void GameOver()
     {
-        return;
+        var global = (Global) GetNode("root/Global");
+        global.GameOver();
     }
 
     private void _on_Player_win()
     {
-        return;
-        ;
+        var global = (Global) GetNode("root/Global");
+        global.NextLevel();
     }
 
     private void _on_Player_grabbed_key()

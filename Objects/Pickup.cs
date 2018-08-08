@@ -1,8 +1,11 @@
 using Godot;
 using System;
+using System.Security.Cryptography.X509Certificates;
 
 public class Pickup : Area2D
 {
+    [Signal] delegate void CoinPickup();
+    
     private Dictionary<string, string> Textures = new Dictionary<string, string>
     {
         {"coin", "res://Assets/coin.png"},
@@ -33,6 +36,10 @@ public class Pickup : Area2D
 
     public void PickUps()
     {
+        if (GetType().Name == "coin")
+        {
+            EmitSignal("CoinPickup", 1);
+        }
         GetNode<CollisionShape2D>("CollisionShape2D").Disabled = true;
         _tween.Start();
     }
@@ -41,6 +48,7 @@ public class Pickup : Area2D
     {
         QueueFree();
     }
+
 //    public override void _Process(float delta)
 //    {
 //        // Called every frame. Delta is time since last frame.

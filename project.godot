@@ -13,6 +13,10 @@ config_version=3
 config/name="Escape The Maze C#"
 config/icon="res://icon.png"
 
+[autoload]
+
+Global="*res://Global.cs"
+
 [display]
 
 window/stretch/mode="viewport"
