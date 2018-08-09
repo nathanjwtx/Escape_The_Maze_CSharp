@@ -39,10 +39,10 @@ public class Player : Character
         {
             EmitSignal("Dead");
         }
-
-        if (a.IsInGroup("Pickup"))
+        if (a.HasMethod("PickUps"))
         {
-            EmitSignal("Pickup");
+            var p = (Pickup) a;
+            p.PickUps();
         }
 
         if (area.GetClass() == "KeyRed")
@@ -56,4 +56,3 @@ public class Player : Character
         }
     }
 }
-
