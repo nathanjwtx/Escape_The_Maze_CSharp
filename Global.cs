@@ -13,11 +13,11 @@ public class Global : Node
     public string EndScreen = "res://UI/EndScreen.tscn";
 
     private int CurrentLevel;
-    private int Score;
+    public int Score;
 
     public override void _Ready()
     {
-//        Viewport root = GetTree().GetRoot();
+        Viewport root = GetTree().GetRoot();
 
     }
 
@@ -45,10 +45,4 @@ public class Global : Node
             GetTree().ChangeScene(Levels[CurrentLevel]);
         }
     }
-//    public override void _Process(float delta)
-//    {
-//        // Called every frame. Delta is time since last frame.
-//        // Update game logic here.
-//        
-//    }
 }

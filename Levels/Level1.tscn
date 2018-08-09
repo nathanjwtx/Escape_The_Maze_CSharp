@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Levels/Level1.cs" type="Script" id=1]
 [ext_resource path="res://Characters/Enemies/Enemy.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Objects/Pickup.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Assets/tileset.tres" type="TileSet" id=4]
 [ext_resource path="res://Characters/Player/Player.tscn" type="PackedScene" id=5]
+[ext_resource path="res://UI/HUD.tscn" type="PackedScene" id=6]
 
 [node name="Level1" type="Node2D" index="0"]
 
@@ -85,5 +86,7 @@ __meta__ = {
 [node name="PlayerOne" parent="." index="3" instance=ExtResource( 5 )]
 
 _sections_unfolded = [ "Animation", "Collision", "Material", "Transform", "Visibility" ]
+
+[node name="HUD" parent="." index="4" instance=ExtResource( 6 )]
 
 

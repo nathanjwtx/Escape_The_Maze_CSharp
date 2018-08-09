@@ -16,9 +16,11 @@ public class Level1 : Node2D
     private int cellID;
     private List<Vector2> _doors = new List<Vector2>();
     private Player _player;
+    private HUD _hud;
     
     public override void _Ready()
     {
+        _hud = GetNode<HUD>("HUD");
         _player = GetNode<Player>("PlayerOne");
         _items = GetNode<TileMap>("Items");
         _ground = GetNode<TileMap>("Ground");
@@ -57,23 +59,24 @@ public class Level1 : Node2D
             Vector2 pos = _items.MapToWorld(cell) + _items.CellSize / 2;
             switch (cellType)
             {
-                    case "slime_spawn":
-                        var s = (Enemy) EnemyScene.Instance();
-                        s.Position = pos;
-                        s.TileSize = Convert.ToInt32(_items.CellSize.x);
-                        AddChild(s);
-                        break;
-                    case "player_spawn":
-                        _player.Position = pos;
-                        _player.TileSize = 64;
-                        break;
-                    case "coin": case "key_red": case "star":
-                        Pickup p = (Pickup) PickupScene.Instance();
-                        p.Init(cellType, pos);
-                        AddChild(p);
-                        break;
-                    default:
-                        break;
+                case "slime_spawn":
+                    var s = (Enemy) EnemyScene.Instance();
+                    s.Position = pos;
+                    s.TileSize = Convert.ToInt32(_items.CellSize.x);
+                    AddChild(s);
+                    break;
+                case "player_spawn":
+                    _player.Position = pos;
+                    _player.TileSize = 64;
+                    break;
+                case "coin": case "key_red": case "star":
+                    Pickup p = (Pickup) PickupScene.Instance();
+                    p.Init(cellType, pos);
+                    AddChild(p);
+                    p.Connect("CoinPickup", _hud, "UpdateScore");
+                    break;
+                default:
+                    break;
             }
         }
     }
@@ -97,11 +100,6 @@ public class Level1 : Node2D
             _walls.SetCellv(door, -1);
         }
     }
-    
-//    public override void _Process(float delta)
-//    {
-//        // Called every frame. Delta is time since last frame.
-//        // Update game logic here.
-//        
-//    }
+
 }
+

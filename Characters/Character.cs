@@ -50,21 +50,20 @@ public class Character : Area2D
 
         CanMove = false;
         _player.Play(Facing);
-//        _moveTween = GetNode<Tween>("MoveTween");
-//        _moveTween.InterpolateProperty(this, "position", Position, Position + _moves[Facing] * TileSize, 
-//            1.0f / Speed, Tween.TransitionType.Sine, Tween.EaseType.InOut);
-//        _moveTween.Start();
-        Position = Position + _moves[Facing] * TileSize;
+        if (Name == "PlayerOne")
+        {
+            _moveTween = GetNode<Tween>("MoveTween");
+            _moveTween.InterpolateProperty(this, "position", Position, Position + _moves[Facing] * TileSize, 
+                1.0f / Speed, Tween.TransitionType.Sine, Tween.EaseType.InOut);
+            _moveTween.Start();   
+        }
+        else
+        {
+            Position = Position + _moves[Facing] * TileSize;   
+        }
         return true;
     }
-    
-//    public override void _Process(float delta)
-//    {
-//        // Called every frame. Delta is time since last frame.
-//        // Update game logic here.
-//        
-//    }
-    
+
     private void _on_MoveTween_tween_completed(Godot.Object @object, NodePath key)
     {
         CanMove = true;
