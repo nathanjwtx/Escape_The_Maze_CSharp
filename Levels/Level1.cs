@@ -17,6 +17,7 @@ public class Level1 : Node2D
     private List<Vector2> _doors = new List<Vector2>();
     private Player _player;
     private HUD _hud;
+    private Godot.Dictionary<string, Vector2> _doorVector2s = new Godot.Dictionary<string, Vector2>(); 
     
     public override void _Ready()
     {
@@ -28,15 +29,19 @@ public class Level1 : Node2D
         _items.Hide();
         SetCameraLimits();
         _walls = GetNode<TileMap>("Walls");
+        // add doors to their own tileset/group then rework code below
         var doorID = _walls.TileSet.FindTileByName("door_red");
         foreach (Vector2 cell in _walls.GetUsedCellsById(doorID))
         {
+            GD.Print(_walls.TileSet.TileGetName(doorID));
+            _doorVector2s.Add(_walls.TileSet.TileGetName(doorID), cell);
             _doors.Add(cell);
         }
 
         SpawnItems();
         _player.Connect("Dead", _player, "GameOver");
         _player.Connect("GrabbedKey", _player, "_on_Player_Grabbed_Key");
+        _player.Connect("GreenKey", this, "_on_PlayerOne_GreenKey");
         _player.Connect("Win", _player, "_on_Player_win");
     }
 
@@ -69,11 +74,14 @@ public class Level1 : Node2D
                     _player.Position = pos;
                     _player.TileSize = 64;
                     break;
-                case "coin": case "key_red": case "star":
+                case "coin": case "key_red": case "star": case "key_green":
                     Pickup p = (Pickup) PickupScene.Instance();
                     p.Init(cellType, pos);
                     AddChild(p);
-                    p.Connect("CoinPickup", _hud, "UpdateScore");
+                    if (cellType == "coin")
+                    {
+                        p.Connect("CoinPickup", _hud, "UpdateScore");   
+                    }
                     break;
                 default:
                     break;
@@ -101,4 +109,8 @@ public class Level1 : Node2D
         }
     }
 
+    private void _on_PlayerOne_GreenKey()
+    {
+        GD.Print(_doorVector2s["door_green"]);
+    }
 }

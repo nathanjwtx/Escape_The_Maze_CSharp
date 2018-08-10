@@ -9,6 +9,8 @@ public class Player : Character
     [Signal]
     delegate void GrabbedKey();
     [Signal]
+    delegate void GreenKey();
+    [Signal]
     delegate void Win();
 
     public override void _Ready()
@@ -35,6 +37,7 @@ public class Player : Character
     private void _on_Player_area_entered(Godot.Object area)
     {
         var a = (Node2D) area;
+        var x = (Pickup) a;
         if (a.IsInGroup("enemies"))
         {
             EmitSignal("Dead");
@@ -49,10 +52,18 @@ public class Player : Character
         {
             EmitSignal("GrabbedKey");
         }
+        
+        if (x.MyType == "key_green")
+        {
+            GD.Print("green");
+            EmitSignal("GreenKey");
+        }
 
         if (area.GetClass() == "star")
         {
             EmitSignal("Win");
         }
     }
+    
 }
+

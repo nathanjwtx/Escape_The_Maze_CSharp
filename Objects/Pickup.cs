@@ -10,12 +10,15 @@ public class Pickup : Area2D
     {
         {"coin", "res://Assets/coin.png"},
         {"key_red", "res://Assets/keyRed.png"},
+        {"key_green", "res://Assets/keyGreen.png"},
         {"star", "res://Assets/star.png"}
     };
 
     private Tween _tween;
     private Sprite _sprite = new Sprite();
     public Texture _texture;
+    public string MyType;
+    private int _count;
 
     public override void _Ready()
     {
@@ -29,6 +32,8 @@ public class Pickup : Area2D
 
     public void Init(string textType, Vector2 pos)
     {
+        _count += 1;
+        MyType = textType;
         _texture = (Texture) GD.Load(Textures[textType]);
         GetNode<Sprite>("PickupSprite").Texture = _texture;
         Position = pos;
@@ -42,7 +47,8 @@ public class Pickup : Area2D
     {
         if (IsInGroup("Coins"))
         {
-            EmitSignal("CoinPickup", 1);
+            GD.Print(MyType);
+            EmitSignal("CoinPickup", 2);
         }
         GetNode<CollisionShape2D>("CollisionShape2D").Disabled = true;
         _tween.Start();
