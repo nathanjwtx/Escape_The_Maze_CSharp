@@ -6,7 +6,8 @@ public class Global : Node
 {
     private List<string> Levels = new List<string>
     {
-        "res://Levels/Level1.tscn"
+        "res://Levels/Level1/Level1.tscn",
+        "res://Levels/Level2/Level2.tscn"
     };
 
     public string StartScreen = "res://UI/StartScreen.tscn";

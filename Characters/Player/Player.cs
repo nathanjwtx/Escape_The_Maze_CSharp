@@ -7,7 +7,7 @@ public class Player : Character
     [Signal]
     delegate void Dead();
     [Signal]
-    delegate void GrabbedKey();
+    delegate void RedKey();
     [Signal]
     delegate void GreenKey();
     [Signal]
@@ -48,20 +48,17 @@ public class Player : Character
             p.PickUps();
         }
 
-        if (area.GetClass() == "KeyRed")
+        switch (x.MyType)
         {
-            EmitSignal("GrabbedKey");
-        }
-        
-        if (x.MyType == "key_green")
-        {
-            GD.Print("green");
-            EmitSignal("GreenKey");
-        }
-
-        if (area.GetClass() == "star")
-        {
-            EmitSignal("Win");
+                case "key_green":
+                    EmitSignal("GreenKey");
+                    break;
+                case "key_red":
+                    EmitSignal("RedKey");
+                    break;
+                case "star":
+                    EmitSignal("Win");
+                    break;
         }
     }
     
