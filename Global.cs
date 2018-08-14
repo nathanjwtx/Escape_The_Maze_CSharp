@@ -7,7 +7,8 @@ public class Global : Node
     public List<string> Levels = new List<string>
     {
         "res://Levels/Level1/Level1.tscn",
-        "res://Levels/Level2/Level2.tscn"
+        "res://Levels/Level2/Level2a.tscn",
+        "res://Levels/Level3/Level3.tscn"
     };
 
     public string StartScreen = "res://UI/StartScreen.tscn";
@@ -46,7 +47,7 @@ public class Global : Node
     
     public void NextLevel(string path)
     {
-//        CurrentLevel += 1;
+        CurrentLevel += 1;
         GD.Print(CurrentLevel);
         if (CurrentLevel >= Levels.Count)
         {
