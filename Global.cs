@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class Global : Node
 {
-    private List<string> Levels = new List<string>
+    public List<string> Levels = new List<string>
     {
         "res://Levels/Level1/Level1.tscn",
         "res://Levels/Level2/Level2.tscn"
@@ -16,34 +16,55 @@ public class Global : Node
     private int CurrentLevel;
     public int Score;
 
+    public Node CurrentScene { get; set; }
+    
+    public Viewport Root;
+    
     public override void _Ready()
     {
-        Viewport root = GetTree().GetRoot();
-
+        Root = GetTree().GetRoot();
     }
 
     public void NewGame()
     {
         CurrentLevel = -1;
+        CurrentScene = Root.GetChild(Root.GetChildCount() - 1);
         Score = 0;
-        NextLevel();
+        GotoScene(Levels[0]);
+//        GotoScene();
     }
 
     public void GameOver()
     {
-        GetTree().ChangeScene("EndScene");
+        GetTree().ChangeScene(EndScreen);
     }
 
-    public void NextLevel()
+    public void GotoScene(string path)
     {
-        CurrentLevel += 1;
+        CallDeferred(nameof(NextLevel), path);
+    }
+    
+    public void NextLevel(string path)
+    {
+//        CurrentLevel += 1;
+        GD.Print(CurrentLevel);
         if (CurrentLevel >= Levels.Count)
         {
             GameOver();
         }
         else
         {
-            GetTree().ChangeScene(Levels[CurrentLevel]);
+//            if (CurrentLevel> -1)
+//            {
+                CurrentScene.Free();   
+//            }
+//            CurrentLevel += 1;
+//            GD.Print($"Next Level: {CurrentLevel}");
+//            GD.Print($"Next Level: {Levels[CurrentLevel]}");
+            var nextScene = (PackedScene) GD.Load(path);
+            CurrentScene = nextScene.Instance();
+            GetTree().GetRoot().AddChild(CurrentScene);
+            GetTree().SetCurrentScene(CurrentScene);
         }
     }
 }

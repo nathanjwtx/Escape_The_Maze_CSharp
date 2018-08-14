@@ -19,7 +19,9 @@ public class StartScreen : Control
         base._Input(@event);
         if (@event.IsActionPressed("ui_select"))
         {
-            var global = (Global) GetNode("root/Global");
+//            var global = new Global();
+            var global = (Global) GetNode("/root/Global");
+//            global.GotoScene();
             global.NewGame();
         }
     }

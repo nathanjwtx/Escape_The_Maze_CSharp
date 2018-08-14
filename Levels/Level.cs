@@ -103,15 +103,17 @@ public class Level : Node2D
 
     private void GameOver()
     {
-        var global = (Global) GetNode("root/Global");
+        var global = (Global) GetNode("/root/Global");
         global.GameOver();
     }
 
     private void _on_PlayerOne_win()
     {
         GD.Print("got star");
-        var global = (Global) GetNode("root/Global");
-        global.NextLevel();
+//        var global = new Global();
+        var global = (Global) GetNode("/root/Global");
+        global.GotoScene(global.Levels[1]);
+//        global.NextLevel();
     }
 
     private void _on_PlayerOne_RedKey()
