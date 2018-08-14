@@ -14,7 +14,7 @@ public class Global : Node
     public string StartScreen = "res://UI/StartScreen.tscn";
     public string EndScreen = "res://UI/EndScreen.tscn";
 
-    private int CurrentLevel;
+    public int CurrentLevel;
     public int Score;
 
     public Node CurrentScene { get; set; }
@@ -42,10 +42,11 @@ public class Global : Node
 
     public void GotoScene(string path)
     {
-        CallDeferred(nameof(NextLevel), path);
+        CallDeferred(nameof(NextLevel));
+//        CallDeferred(nameof(NextLevel), path);
     }
     
-    public void NextLevel(string path)
+    public void NextLevel()
     {
         CurrentLevel += 1;
         GD.Print(CurrentLevel);
@@ -62,7 +63,7 @@ public class Global : Node
 //            CurrentLevel += 1;
 //            GD.Print($"Next Level: {CurrentLevel}");
 //            GD.Print($"Next Level: {Levels[CurrentLevel]}");
-            var nextScene = (PackedScene) GD.Load(path);
+            var nextScene = (PackedScene) GD.Load(Levels[CurrentLevel]);
             CurrentScene = nextScene.Instance();
             GetTree().GetRoot().AddChild(CurrentScene);
             GetTree().SetCurrentScene(CurrentScene);

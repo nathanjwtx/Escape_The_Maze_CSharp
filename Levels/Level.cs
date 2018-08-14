@@ -112,7 +112,7 @@ public class Level : Node2D
         GD.Print("got star");
 //        var global = new Global();
         var global = (Global) GetNode("/root/Global");
-        global.GotoScene(global.Levels[1]);
+        global.GotoScene(global.Levels[global.CurrentLevel]);
 //        global.NextLevel();
     }
 
