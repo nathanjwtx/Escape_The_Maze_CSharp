@@ -31,8 +31,7 @@ public class Global : Node
         CurrentLevel = -1;
         CurrentScene = Root.GetChild(Root.GetChildCount() - 1);
         Score = 0;
-        GotoScene(Levels[0]);
-//        GotoScene();
+        GotoScene();
     }
 
     public void GameOver()
@@ -40,10 +39,9 @@ public class Global : Node
         GetTree().ChangeScene(EndScreen);
     }
 
-    public void GotoScene(string path)
+    public void GotoScene()
     {
         CallDeferred(nameof(NextLevel));
-//        CallDeferred(nameof(NextLevel), path);
     }
     
     public void NextLevel()
@@ -56,13 +54,7 @@ public class Global : Node
         }
         else
         {
-//            if (CurrentLevel> -1)
-//            {
-                CurrentScene.Free();   
-//            }
-//            CurrentLevel += 1;
-//            GD.Print($"Next Level: {CurrentLevel}");
-//            GD.Print($"Next Level: {Levels[CurrentLevel]}");
+            CurrentScene.Free();   
             var nextScene = (PackedScene) GD.Load(Levels[CurrentLevel]);
             CurrentScene = nextScene.Instance();
             GetTree().GetRoot().AddChild(CurrentScene);

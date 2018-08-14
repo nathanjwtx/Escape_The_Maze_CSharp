@@ -110,10 +110,8 @@ public class Level : Node2D
     private void _on_PlayerOne_win()
     {
         GD.Print("got star");
-//        var global = new Global();
         var global = (Global) GetNode("/root/Global");
-        global.GotoScene(global.Levels[global.CurrentLevel]);
-//        global.NextLevel();
+        global.GotoScene();
     }
 
     private void _on_PlayerOne_RedKey()
