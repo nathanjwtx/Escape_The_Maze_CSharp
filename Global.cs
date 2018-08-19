@@ -25,11 +25,6 @@ public class Global : Node
     {
         Root = GetTree().GetRoot();
     }
-
-    public void TestMethod()
-    {
-        
-    }
     
     public void NewGame()
     {
