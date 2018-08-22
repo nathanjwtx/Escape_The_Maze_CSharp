@@ -13,11 +13,6 @@ public class Player : Character
     [Signal]
     delegate void Win();
 
-    public override void _Ready()
-    {
-        base._Ready();
-    }
-
     public override void _Process(float delta)
     {
         base._Process(delta);
@@ -37,7 +32,6 @@ public class Player : Character
     private void _on_Player_area_entered(Godot.Object area)
     {
         var a = (Node2D) area;
-        var x = (Pickup) a;
         if (a.IsInGroup("enemies"))
         {
             EmitSignal("Dead");
@@ -48,8 +42,11 @@ public class Player : Character
             p.PickUps();
         }
 
-        switch (x.MyType)
+        if (!a.IsInGroup("enemies"))
         {
+            var x = (Pickup) a;
+            switch (x.MyType)
+            {
                 case "key_green":
                     EmitSignal("GreenKey");
                     break;
@@ -59,6 +56,7 @@ public class Player : Character
                 case "star":
                     EmitSignal("Win");
                     break;
+            }   
         }
     }
     

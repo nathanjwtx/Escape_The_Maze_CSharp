@@ -26,6 +26,7 @@ public class Global : Node
     public override void _Ready()
     {
         Root = GetTree().GetRoot();
+        Setup();
         var screenSize = OS.GetScreenSize();
         var windowSize = OS.GetWindowSize();
         OS.SetWindowPosition(screenSize * 0.5f - windowSize * 0.5f);
@@ -39,8 +40,13 @@ public class Global : Node
         GotoScene();
     }
 
-    public void GameOver()
+    public void GlobalGameOver()
     {
+        if (Score > Highscore)
+        {
+            Highscore = Score;
+            SaveScore();
+        }
         GetTree().ChangeScene(EndScreen);
     }
 
@@ -52,10 +58,9 @@ public class Global : Node
     public void NextLevel()
     {
         _currentLevel += 1;
-        GD.Print(_currentLevel);
         if (_currentLevel >= Levels.Count)
         {
-            GameOver();
+            GlobalGameOver();
         }
         else
         {
@@ -66,6 +71,8 @@ public class Global : Node
             GetTree().SetCurrentScene(CurrentScene);
         }
     }
+
+    #region Game Save
 
     public void Setup()
     {
@@ -78,4 +85,14 @@ public class Global : Node
             f.Close();
         }
     }
+
+    public void SaveScore()
+    {
+        File f = new File();
+        f.Open(ScoreFile, 2);
+        f.StoreString(Convert.ToString(Highscore));
+        f.Close();
+    }
+    #endregion
+    
 }

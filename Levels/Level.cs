@@ -32,7 +32,7 @@ public class Level : Node2D
         _walls = GetNode<TileMap>("Walls");
         
         SpawnItems();
-        _player.Connect("Dead", _player, "GameOver");
+        _player.Connect("Dead", this, "GameOver");
         _player.Connect("RedKey", this, "_on_PlayerOne_RedKey");
         _player.Connect("GreenKey", this, "_on_PlayerOne_GreenKey");
         _player.Connect("Win", this, "_on_PlayerOne_win");
@@ -104,7 +104,7 @@ public class Level : Node2D
     private void GameOver()
     {
         var global = (Global) GetNode("/root/Global");
-        global.GameOver();
+        global.GlobalGameOver();
     }
 
     private void _on_PlayerOne_win()
