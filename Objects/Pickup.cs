@@ -17,7 +17,6 @@ public class Pickup : Area2D
     };
 
     private Tween _tween;
-//    private Sprite _sprite = new Sprite();
     public Texture _texture;
     public string MyType;
 
@@ -58,13 +57,6 @@ public class Pickup : Area2D
     {
         QueueFree();
     }
-
-//    public override void _Process(float delta)
-//    {
-//        // Called every frame. Delta is time since last frame.
-//        // Update game logic here.
-//        
-//    }
 }
 
 

@@ -13,6 +13,12 @@ public class Player : Character
     [Signal]
     delegate void Win();
 
+    public override void _Ready()
+    {
+        base._Ready();
+        Scale = new Vector2(1.0f, 1.0f);
+    }
+
     public override void _Process(float delta)
     {
         base._Process(delta);
@@ -29,11 +35,16 @@ public class Player : Character
         }
     }
     
-    private void _on_Player_area_entered(Godot.Object area)
+    async private void _on_Player_area_entered(Godot.Object area)
     {
         var a = (Node2D) area;
         if (a.IsInGroup("enemies"))
         {
+            a.Hide();
+            SetProcess(false);
+            GetNode<CollisionShape2D>("CollisionShape2D").Disabled = true;
+            GetNode<AnimationPlayer>("AnimationPlayer").Play("Die");
+            await ToSignal(GetNode<AnimationPlayer>("AnimationPlayer"), "animation_finished");
             EmitSignal("Dead");
         }
         if (a.HasMethod("PickUps"))
