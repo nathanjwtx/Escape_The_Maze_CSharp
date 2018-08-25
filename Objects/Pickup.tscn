@@ -7,9 +7,9 @@
 custom_solver_bias = 0.0
 extents = Vector2( 32, 32 )
 
-[node name="Pickup" type="Area2D" groups=[
-"Coins",
+[node name="Pickup" type="Area2D" index="0" groups=[
 "Pickup",
+"Coins",
 ]]
 
 input_pickable = true

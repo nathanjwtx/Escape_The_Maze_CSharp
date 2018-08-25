@@ -17,7 +17,7 @@ public class Pickup : Area2D
     };
 
     private Tween _tween;
-    private Sprite _sprite = new Sprite();
+//    private Sprite _sprite = new Sprite();
     public Texture _texture;
     public string MyType;
 
@@ -25,10 +25,10 @@ public class Pickup : Area2D
     {
         _tween = GetNode<Tween>("Tween");
 //        _sprite = GetNode<Sprite>("PickupSprite");
-        _tween.InterpolateProperty(_sprite, "scale", new Vector2(1, 1), new Vector2(3, 2), 0.5f,
+        _tween.InterpolateProperty(this, "scale", Scale, Scale * 3, Convert.ToSingle(0.5),
             Tween.TransitionType.Quad, Tween.EaseType.InOut);
-//        _tween.InterpolateProperty(_sprite, "modulate", new Color(1.0f, 1.0f, 1.0f),
-//            new Color(1.0f, 1.0f, 1.0f, 0.0f), 0.5f, Tween.TransitionType.Quad, Tween.EaseType.InOut);
+        _tween.InterpolateProperty(this, "modulate", new Color(1.0f, 1.0f, 1.0f),
+            new Color(1.0f, 1.0f, 1.0f, 0.0f), 0.5f, Tween.TransitionType.Quad, Tween.EaseType.InOut);
     }
 
     public void Init(string textType, Vector2 pos)
