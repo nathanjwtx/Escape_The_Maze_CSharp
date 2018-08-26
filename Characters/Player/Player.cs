@@ -29,6 +29,7 @@ public class Player : Character
             {
                 if (Move(move))
                 {
+                    GetNode<AudioStreamPlayer>("Footsteps").Play();
                     EmitSignal("Moved");
                 }
             }
@@ -41,8 +42,9 @@ public class Player : Character
         if (a.IsInGroup("enemies"))
         {
             a.Hide();
-            SetProcess(false);
             GetNode<CollisionShape2D>("CollisionShape2D").Disabled = true;
+            SetProcess(false);
+            GetNode<AudioStreamPlayer>("Lose").Play();
             GetNode<AnimationPlayer>("AnimationPlayer").Play("Die");
             await ToSignal(GetNode<AnimationPlayer>("AnimationPlayer"), "animation_finished");
             EmitSignal("Dead");
@@ -60,15 +62,25 @@ public class Player : Character
             {
                 case "key_green":
                     EmitSignal("GreenKey");
+                    PlayKeyPickupSound();
                     break;
                 case "key_red":
                     EmitSignal("RedKey");
+                    PlayKeyPickupSound();
                     break;
                 case "star":
+                    GetNode<AudioStreamPlayer>("Win").Play();
+                    GetNode<CollisionShape2D>("CollisionShape2D").Disabled = true;
+                    await ToSignal(GetNode<AudioStreamPlayer>("Win"), "finished");
                     EmitSignal("Win");
                     break;
             }   
         }
+    }
+
+    private void PlayKeyPickupSound()
+    {
+        GetNode<AudioStreamPlayer>("KeyPickup").Play();
     }
     
 }

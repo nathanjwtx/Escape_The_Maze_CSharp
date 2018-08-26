@@ -47,6 +47,7 @@ public class Pickup : Area2D
         if (IsInGroup("Coins"))
         {
             EmitSignal("CoinPickup", 1);
+            GetNode<AudioStreamPlayer>("CoinPickup").Play();
         }
 
         GetNode<CollisionShape2D>("CollisionShape2D").Disabled = true;

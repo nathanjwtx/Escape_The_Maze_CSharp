@@ -1,13 +1,14 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Objects/Pickup.cs" type="Script" id=1]
+[ext_resource path="res://Assets/audio/coin_pickup.ogg" type="AudioStream" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
 
 custom_solver_bias = 0.0
 extents = Vector2( 32, 32 )
 
-[node name="Pickup" type="Area2D" index="0" groups=[
+[node name="Pickup" type="Area2D" groups=[
 "Pickup",
 "Coins",
 ]]
@@ -39,6 +40,15 @@ playback_speed = 1.0
 playback/active = false
 playback/repeat = false
 playback/speed = 1.0
+
+[node name="CoinPickup" type="AudioStreamPlayer" parent="." index="3"]
+
+stream = ExtResource( 2 )
+volume_db = 1.0
+pitch_scale = 1.0
+autoplay = false
+mix_target = 0
+bus = "Master"
 
 [connection signal="tween_completed" from="Tween" to="." method="_on_Tween_tween_completed"]
 
