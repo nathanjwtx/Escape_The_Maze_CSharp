@@ -16,7 +16,7 @@ public class EndScreen : Control
 
     private void _on_Timer_timeout()
     {
-        var global = (Global) GetNode("root/Global");
+        var global = (Global) GetNode("/root/Global");
         GetTree().ChangeScene(global.StartScreen);
     }
 //    public override void _Process(float delta)

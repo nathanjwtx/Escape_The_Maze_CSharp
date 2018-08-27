@@ -19,11 +19,4 @@ public class HUD : CanvasLayer
         _global.Score += value;
         _score.Text = Convert.ToString(_global.Score);
     }
-    
-//    public override void _Process(float delta)
-//    {
-//        // Called every frame. Delta is time since last frame.
-//        // Update game logic here.
-//        
-//    }
 }

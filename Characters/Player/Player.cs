@@ -7,7 +7,7 @@ public class Player : Character
     [Signal]
     delegate void Dead();
     [Signal]
-    delegate void GrabbedKey();
+    delegate void RedKey();
     [Signal]
     delegate void GreenKey();
     [Signal]
@@ -16,6 +16,7 @@ public class Player : Character
     public override void _Ready()
     {
         base._Ready();
+        Scale = new Vector2(1.0f, 1.0f);
     }
 
     public override void _Process(float delta)
@@ -28,18 +29,24 @@ public class Player : Character
             {
                 if (Move(move))
                 {
+                    GetNode<AudioStreamPlayer>("Footsteps").Play();
                     EmitSignal("Moved");
                 }
             }
         }
     }
     
-    private void _on_Player_area_entered(Godot.Object area)
+    async private void _on_Player_area_entered(Godot.Object area)
     {
         var a = (Node2D) area;
-        var x = (Pickup) a;
         if (a.IsInGroup("enemies"))
         {
+            a.Hide();
+            GetNode<CollisionShape2D>("CollisionShape2D").Disabled = true;
+            SetProcess(false);
+            GetNode<AudioStreamPlayer>("Lose").Play();
+            GetNode<AnimationPlayer>("AnimationPlayer").Play("Die");
+            await ToSignal(GetNode<AnimationPlayer>("AnimationPlayer"), "animation_finished");
             EmitSignal("Dead");
         }
         if (a.HasMethod("PickUps"))
@@ -48,21 +55,32 @@ public class Player : Character
             p.PickUps();
         }
 
-        if (area.GetClass() == "KeyRed")
+        if (!a.IsInGroup("enemies"))
         {
-            EmitSignal("GrabbedKey");
+            var x = (Pickup) a;
+            switch (x.MyType)
+            {
+                case "key_green":
+                    EmitSignal("GreenKey");
+                    PlayKeyPickupSound();
+                    break;
+                case "key_red":
+                    EmitSignal("RedKey");
+                    PlayKeyPickupSound();
+                    break;
+                case "star":
+                    GetNode<AudioStreamPlayer>("Win").Play();
+                    GetNode<CollisionShape2D>("CollisionShape2D").Disabled = true;
+                    await ToSignal(GetNode<AudioStreamPlayer>("Win"), "finished");
+                    EmitSignal("Win");
+                    break;
+            }   
         }
-        
-        if (x.MyType == "key_green")
-        {
-            GD.Print("green");
-            EmitSignal("GreenKey");
-        }
+    }
 
-        if (area.GetClass() == "star")
-        {
-            EmitSignal("Win");
-        }
+    private void PlayKeyPickupSound()
+    {
+        GetNode<AudioStreamPlayer>("KeyPickup").Play();
     }
     
 }

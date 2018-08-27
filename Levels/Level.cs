@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Array = Godot.Array;
 
-public class Level1 : Node2D
+public class Level : Node2D
 {
     [Export] public PackedScene EnemyScene;
     [Export] public PackedScene PickupScene;
@@ -12,9 +12,9 @@ public class Level1 : Node2D
     private static TileMap _items;
     private TileMap _ground;
     private TileMap _walls;
+    private TileMap _doors;
     private Random _random;
     private int cellID;
-    private List<Vector2> _doors = new List<Vector2>();
     private Player _player;
     private HUD _hud;
     private Godot.Dictionary<string, Vector2> _doorVector2s = new Godot.Dictionary<string, Vector2>(); 
@@ -25,24 +25,17 @@ public class Level1 : Node2D
         _player = GetNode<Player>("PlayerOne");
         _items = GetNode<TileMap>("Items");
         _ground = GetNode<TileMap>("Ground");
+        _doors = GetNode<TileMap>("Doors");
         _random = new Random();
         _items.Hide();
         SetCameraLimits();
         _walls = GetNode<TileMap>("Walls");
-        // add doors to their own tileset/group then rework code below
-        var doorID = _walls.TileSet.FindTileByName("door_red");
-        foreach (Vector2 cell in _walls.GetUsedCellsById(doorID))
-        {
-            GD.Print(_walls.TileSet.TileGetName(doorID));
-            _doorVector2s.Add(_walls.TileSet.TileGetName(doorID), cell);
-            _doors.Add(cell);
-        }
-
+        
         SpawnItems();
-        _player.Connect("Dead", _player, "GameOver");
-        _player.Connect("GrabbedKey", _player, "_on_Player_Grabbed_Key");
+        _player.Connect("Dead", this, "GameOver");
+        _player.Connect("RedKey", this, "_on_PlayerOne_RedKey");
         _player.Connect("GreenKey", this, "_on_PlayerOne_GreenKey");
-        _player.Connect("Win", _player, "_on_Player_win");
+        _player.Connect("Win", this, "_on_PlayerOne_win");
     }
 
     private void SetCameraLimits()
@@ -55,13 +48,14 @@ public class Level1 : Node2D
         _player.GetNode<Camera2D>("Camera2D").LimitBottom = Convert.ToInt32(mapSize.End.x * cellSize.x + cellSize.x);
     }
 
-    private void SpawnItems()
+    public void SpawnItems()
     {
         foreach (Vector2 cell in _items.GetUsedCells())
         {
             int id = _items.GetCellv(cell);
             string cellType = _items.TileSet.TileGetName(id);
             Vector2 pos = _items.MapToWorld(cell) + _items.CellSize / 2;
+
             switch (cellType)
             {
                 case "slime_spawn":
@@ -78,39 +72,59 @@ public class Level1 : Node2D
                     Pickup p = (Pickup) PickupScene.Instance();
                     p.Init(cellType, pos);
                     AddChild(p);
-                    if (cellType == "coin")
+
+                    switch (cellType)
                     {
-                        p.Connect("CoinPickup", _hud, "UpdateScore");   
+                            case "coin":
+                                p.Connect("CoinPickup", _hud, "UpdateScore");
+                                break;
                     }
                     break;
-                default:
+            }
+        }
+
+        foreach (Vector2 usedCell in _doors.GetUsedCells())
+        {
+            int id = _doors.GetCellv(usedCell);
+            string cellType = _doors.TileSet.TileGetName(id);
+            Vector2 pos = _doors.MapToWorld(usedCell) + _doors.CellSize / 2;
+            switch (cellType)
+            {
+                case "door_green":
+                    _doorVector2s.Add("door_green", usedCell);
+                    break;
+                case "door_red":
+                    _doorVector2s.Add("door_red", usedCell);
                     break;
             }
+
         }
     }
 
     private void GameOver()
     {
-        var global = (Global) GetNode("root/Global");
-        global.GameOver();
+        var global = (Global) GetNode("/root/Global");
+        global.GlobalGameOver();
     }
 
-    private void _on_Player_win()
+    private void _on_PlayerOne_win()
     {
-        var global = (Global) GetNode("root/Global");
-        global.NextLevel();
+        GD.Print("got star");
+        var global = (Global) GetNode("/root/Global");
+        global.GotoScene();
     }
 
-    private void _on_Player_grabbed_key()
+    private void _on_PlayerOne_RedKey()
     {
-        foreach (var door in _doors)
-        {
-            _walls.SetCellv(door, -1);
-        }
+        GD.Print("got red key");
+//        foreach (var door in _doors)
+//        {
+//            _walls.SetCellv(door, -1);
+//        }
     }
 
     private void _on_PlayerOne_GreenKey()
     {
-        GD.Print(_doorVector2s["door_green"]);
+        _doors.SetCellv(_doorVector2s["door_green"], -1);
     }
 }

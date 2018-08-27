@@ -1,16 +1,56 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Characters/Character.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Characters/Player/Player.cs" type="Script" id=2]
 [ext_resource path="res://Assets/player.png" type="Texture" id=3]
+[ext_resource path="res://Assets/audio/win.ogg" type="AudioStream" id=4]
+[ext_resource path="res://Assets/audio/lose.wav" type="AudioStream" id=5]
+[ext_resource path="res://Assets/audio/footsteps.wav" type="AudioStream" id=6]
+[ext_resource path="res://Assets/audio/key_grabbed.ogg" type="AudioStream" id=7]
 
-[node name="Player" instance=ExtResource( 1 )]
+[sub_resource type="Animation" id=1]
 
+resource_name = "Die"
+length = 2.0
+loop = false
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 360.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 0.2, 0.2 ) ]
+}
+
+[node name="Player" index="0" instance=ExtResource( 1 )]
+
+rotation = 6.28319
 collision_layer = 2
 collision_mask = 13
 script = ExtResource( 2 )
-_sections_unfolded = [ "Animation", "Collision" ]
+_sections_unfolded = [ "Animation", "Collision", "Transform" ]
 Speed = 2
+
+[node name="AnimationPlayer" parent="." index="6"]
+
+anims/Die = SubResource( 1 )
 
 [node name="Sprite" parent="." index="7"]
 
@@ -41,6 +81,43 @@ drag_margin_bottom = 0.2
 editor_draw_screen = true
 editor_draw_limits = false
 editor_draw_drag_margin = false
+
+[node name="Win" type="AudioStreamPlayer" parent="." index="9"]
+
+stream = ExtResource( 4 )
+volume_db = 0.0
+pitch_scale = 1.0
+autoplay = false
+mix_target = 0
+bus = "Master"
+_sections_unfolded = [ "Pause" ]
+
+[node name="Lose" type="AudioStreamPlayer" parent="." index="10"]
+
+stream = ExtResource( 5 )
+volume_db = 0.0
+pitch_scale = 1.0
+autoplay = false
+mix_target = 0
+bus = "Master"
+
+[node name="Footsteps" type="AudioStreamPlayer" parent="." index="11"]
+
+stream = ExtResource( 6 )
+volume_db = -20.0
+pitch_scale = 1.0
+autoplay = false
+mix_target = 0
+bus = "Master"
+
+[node name="KeyPickup" type="AudioStreamPlayer" parent="." index="12"]
+
+stream = ExtResource( 7 )
+volume_db = 0.0
+pitch_scale = 1.0
+autoplay = false
+mix_target = 0
+bus = "Master"
 
 [connection signal="area_entered" from="." to="." method="_on_Player_area_entered"]
 
