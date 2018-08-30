@@ -8,14 +8,15 @@ public class Global : Node
     {
         "res://Levels/Level1/Level1.tscn",
         "res://Levels/Level2/Level2a.tscn",
-        "res://Levels/Level3/Level3.tscn"
+        "res://Levels/Level3/Level3.tscn",
+        "res://Levels/Level4/Level4.tscn"
     };
 
     public string StartScreen = "res://UI/StartScreen.tscn";
     public string EndScreen = "res://UI/EndScreen.tscn";
     public string ScoreFile = "user://highscore.txt";
 
-    private int _currentLevel;
+    public int CurrentLevel;
     public int Score;
     public int Highscore;
 
@@ -34,7 +35,7 @@ public class Global : Node
     
     public void NewGame()
     {
-        _currentLevel = -1;
+        CurrentLevel = -1;
         CurrentScene = Root.GetChild(Root.GetChildCount() - 1);
         Score = 0;
         GotoScene();
@@ -57,15 +58,15 @@ public class Global : Node
     
     public void NextLevel()
     {
-        _currentLevel += 1;
-        if (_currentLevel >= Levels.Count)
+        CurrentLevel += 1;
+        if (CurrentLevel >= Levels.Count)
         {
             GlobalGameOver();
         }
         else
         {
             CurrentScene.Free();   
-            var nextScene = (PackedScene) GD.Load(Levels[_currentLevel]);
+            var nextScene = (PackedScene) GD.Load(Levels[CurrentLevel]);
             CurrentScene = nextScene.Instance();
             GetTree().GetRoot().AddChild(CurrentScene);
             GetTree().SetCurrentScene(CurrentScene);

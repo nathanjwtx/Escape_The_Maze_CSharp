@@ -13,11 +13,13 @@ public class Level : Node2D
     private TileMap _ground;
     private TileMap _walls;
     private TileMap _doors;
+    private TileMap _enemies;
     private Random _random;
     private int cellID;
     private Player _player;
     private HUD _hud;
-    private Godot.Dictionary<string, Vector2> _doorVector2s = new Godot.Dictionary<string, Vector2>(); 
+    private Godot.Dictionary<string, Vector2> _doorVector2s = new Godot.Dictionary<string, Vector2>();
+    private List<Vector2> _spawnPoints = new List<Vector2>(); 
     
     public override void _Ready()
     {
@@ -26,6 +28,7 @@ public class Level : Node2D
         _items = GetNode<TileMap>("Items");
         _ground = GetNode<TileMap>("Ground");
         _doors = GetNode<TileMap>("Doors");
+        _enemies = GetNode<TileMap>("EnemySpawn");
         _random = new Random();
         _items.Hide();
         SetCameraLimits();
@@ -58,12 +61,6 @@ public class Level : Node2D
 
             switch (cellType)
             {
-                case "slime_spawn":
-                    var s = (Enemy) EnemyScene.Instance();
-                    s.Position = pos;
-                    s.TileSize = Convert.ToInt32(_items.CellSize.x);
-                    AddChild(s);
-                    break;
                 case "player_spawn":
                     _player.Position = pos;
                     _player.TileSize = 64;
@@ -98,6 +95,27 @@ public class Level : Node2D
                     break;
             }
 
+        }
+    }
+
+    public void SpawnEnemies(int enemyCount)
+    {
+        GD.Print(enemyCount);
+        Random rand = new Random();
+        foreach (Vector2 cell in _enemies.GetUsedCells())
+        {
+            GD.Print(cell);
+            _spawnPoints.Add(cell);
+        }
+        for (int i = enemyCount; i > 0; i--)
+        {
+            var startPoint = rand.Next(0, enemyCount);
+            Vector2 pos = _items.MapToWorld(_spawnPoints[startPoint]) + _items.CellSize / 2;
+            var s = (Enemy) EnemyScene.Instance();
+            s.Position = pos;
+            s.TileSize = Convert.ToInt32(_items.CellSize.x);
+            AddChild(s);
+            _spawnPoints.Remove(_spawnPoints[startPoint]);
         }
     }
 
