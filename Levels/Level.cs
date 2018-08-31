@@ -36,6 +36,7 @@ public class Level : Node2D
         _enemies = GetNode<TileMap>("EnemySpawn");
         _random = new Random();
         _items.Hide();
+        _enemies.Hide();
         SetCameraLimits();
         _walls = GetNode<TileMap>("Walls");
         

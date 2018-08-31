@@ -7,7 +7,7 @@ public class Global : Node
     public List<string> Levels = new List<string>
     {
         "res://Levels/Level1/Level1.tscn",
-        "res://Levels/Level2/Level2a.tscn",
+        "res://Levels/Level2/Level2.tscn",
         "res://Levels/Level3/Level3.tscn",
         "res://Levels/Level4/Level4.tscn"
     };

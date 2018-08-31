@@ -25,7 +25,6 @@ tile_data = PoolIntArray( 524300, 16, 0 )
 
 [node name="EnemySpawn" parent="." index="4"]
 
-visible = false
 tile_data = PoolIntArray( 65545, 9, 0, 196609, 9, 0, 458762, 9, 0, 589825, 9, 0 )
 
 
