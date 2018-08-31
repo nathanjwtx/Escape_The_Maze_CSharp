@@ -6,8 +6,8 @@ using Array = Godot.Array;
 
 public class Level : Node2D
 {
-    [Export] public PackedScene EnemyScene;
-    [Export] public PackedScene PickupScene;
+//    [Export] public PackedScene EnemyScene;
+//    [Export] public PackedScene PickupScene;
 
     private static TileMap _items;
     private TileMap _ground;
@@ -19,10 +19,15 @@ public class Level : Node2D
     private Player _player;
     private HUD _hud;
     private Godot.Dictionary<string, Vector2> _doorVector2s = new Godot.Dictionary<string, Vector2>();
-    private List<Vector2> _spawnPoints = new List<Vector2>(); 
+    private List<Vector2> _spawnPoints = new List<Vector2>();
+    private PackedScene _pickupScene;
+    private PackedScene _enemyScene;
+    public int _enemyCount;
     
     public override void _Ready()
     {
+        _pickupScene = (PackedScene) GD.Load("res://Objects/Pickup.tscn");
+        _enemyScene = (PackedScene) GD.Load("res://Characters/Enemies/Enemy.tscn");
         _hud = GetNode<HUD>("HUD");
         _player = GetNode<Player>("PlayerOne");
         _items = GetNode<TileMap>("Items");
@@ -34,7 +39,8 @@ public class Level : Node2D
         SetCameraLimits();
         _walls = GetNode<TileMap>("Walls");
         
-//        SpawnItems();
+        SpawnItems();
+        SpawnEnemies(_enemyCount);
         _player.Connect("Dead", this, "GameOver");
         _player.Connect("RedKey", this, "_on_PlayerOne_RedKey");
         _player.Connect("GreenKey", this, "_on_PlayerOne_GreenKey");
@@ -51,7 +57,7 @@ public class Level : Node2D
         _player.GetNode<Camera2D>("Camera2D").LimitBottom = Convert.ToInt32(mapSize.End.x * cellSize.x + cellSize.x);
     }
 
-    public void SpawnItems(PackedScene pickup)
+    public void SpawnItems()
     {
         foreach (Vector2 cell in _items.GetUsedCells())
         {
@@ -66,7 +72,7 @@ public class Level : Node2D
                     _player.TileSize = 64;
                     break;
                 case "coin": case "key_red": case "star": case "key_green":
-                    Pickup p = (Pickup) pickup.Instance();
+                    Pickup p = (Pickup) _pickupScene.Instance();
                     p.Init(cellType, pos);
                     AddChild(p);
 
@@ -100,18 +106,16 @@ public class Level : Node2D
 
     public void SpawnEnemies(int enemyCount)
     {
-        GD.Print(enemyCount);
         Random rand = new Random();
         foreach (Vector2 cell in _enemies.GetUsedCells())
         {
-            GD.Print(cell);
             _spawnPoints.Add(cell);
         }
         for (int i = enemyCount; i > 0; i--)
         {
-            var startPoint = rand.Next(0, enemyCount);
+            var startPoint = rand.Next(0, i);
             Vector2 pos = _items.MapToWorld(_spawnPoints[startPoint]) + _items.CellSize / 2;
-            Enemy enemy = (Enemy) EnemyScene.Instance();
+            Enemy enemy = (Enemy) _enemyScene.Instance();
             enemy.Position = pos;
             enemy.TileSize = Convert.ToInt32(_items.CellSize.x);
             AddChild(enemy);
