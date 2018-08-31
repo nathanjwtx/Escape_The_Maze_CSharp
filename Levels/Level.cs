@@ -34,7 +34,7 @@ public class Level : Node2D
         SetCameraLimits();
         _walls = GetNode<TileMap>("Walls");
         
-        SpawnItems();
+//        SpawnItems();
         _player.Connect("Dead", this, "GameOver");
         _player.Connect("RedKey", this, "_on_PlayerOne_RedKey");
         _player.Connect("GreenKey", this, "_on_PlayerOne_GreenKey");
@@ -51,7 +51,7 @@ public class Level : Node2D
         _player.GetNode<Camera2D>("Camera2D").LimitBottom = Convert.ToInt32(mapSize.End.x * cellSize.x + cellSize.x);
     }
 
-    public void SpawnItems()
+    public void SpawnItems(PackedScene pickup)
     {
         foreach (Vector2 cell in _items.GetUsedCells())
         {
@@ -66,7 +66,7 @@ public class Level : Node2D
                     _player.TileSize = 64;
                     break;
                 case "coin": case "key_red": case "star": case "key_green":
-                    Pickup p = (Pickup) PickupScene.Instance();
+                    Pickup p = (Pickup) pickup.Instance();
                     p.Init(cellType, pos);
                     AddChild(p);
 
@@ -111,10 +111,10 @@ public class Level : Node2D
         {
             var startPoint = rand.Next(0, enemyCount);
             Vector2 pos = _items.MapToWorld(_spawnPoints[startPoint]) + _items.CellSize / 2;
-            var s = (Enemy) EnemyScene.Instance();
-            s.Position = pos;
-            s.TileSize = Convert.ToInt32(_items.CellSize.x);
-            AddChild(s);
+            Enemy enemy = (Enemy) EnemyScene.Instance();
+            enemy.Position = pos;
+            enemy.TileSize = Convert.ToInt32(_items.CellSize.x);
+            AddChild(enemy);
             _spawnPoints.Remove(_spawnPoints[startPoint]);
         }
     }

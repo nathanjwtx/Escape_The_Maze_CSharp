@@ -1,22 +1,21 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Levels/Level.cs" type="Script" id=1]
 [ext_resource path="res://Characters/Enemies/Enemy.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Objects/Pickup.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Assets/tileset.tres" type="TileSet" id=4]
-[ext_resource path="res://Characters/Player/Player.tscn" type="PackedScene" id=5]
-[ext_resource path="res://UI/HUD.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Assets/tileset.tres" type="TileSet" id=3]
+[ext_resource path="res://Characters/Player/Player.tscn" type="PackedScene" id=4]
+[ext_resource path="res://UI/HUD.tscn" type="PackedScene" id=5]
 
 [node name="Level" type="Node2D"]
 
 script = ExtResource( 1 )
 EnemyScene = ExtResource( 2 )
-PickupScene = ExtResource( 3 )
+PickupScene = null
 
 [node name="Ground" type="TileMap" parent="." index="0"]
 
 mode = 0
-tile_set = ExtResource( 4 )
+tile_set = ExtResource( 3 )
 cell_size = Vector2( 64, 64 )
 cell_quadrant_size = 16
 cell_custom_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
@@ -39,7 +38,7 @@ __meta__ = {
 [node name="Walls" type="TileMap" parent="." index="1"]
 
 mode = 0
-tile_set = ExtResource( 4 )
+tile_set = ExtResource( 3 )
 cell_size = Vector2( 64, 64 )
 cell_quadrant_size = 16
 cell_custom_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
@@ -62,7 +61,7 @@ __meta__ = {
 [node name="Items" type="TileMap" parent="." index="2"]
 
 mode = 0
-tile_set = ExtResource( 4 )
+tile_set = ExtResource( 3 )
 cell_size = Vector2( 64, 64 )
 cell_quadrant_size = 16
 cell_custom_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
@@ -86,7 +85,7 @@ __meta__ = {
 [node name="Doors" type="TileMap" parent="." index="3"]
 
 mode = 0
-tile_set = ExtResource( 4 )
+tile_set = ExtResource( 3 )
 cell_size = Vector2( 64, 64 )
 cell_quadrant_size = 16
 cell_custom_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
@@ -110,7 +109,7 @@ __meta__ = {
 [node name="EnemySpawn" type="TileMap" parent="." index="4"]
 
 mode = 0
-tile_set = ExtResource( 4 )
+tile_set = ExtResource( 3 )
 cell_size = Vector2( 64, 64 )
 cell_quadrant_size = 16
 cell_custom_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
@@ -131,10 +130,10 @@ __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="PlayerOne" parent="." index="5" instance=ExtResource( 5 )]
+[node name="PlayerOne" parent="." index="5" instance=ExtResource( 4 )]
 
 _sections_unfolded = [ "Animation", "Collision", "Material", "Transform", "Visibility" ]
 
-[node name="HUD" parent="." index="6" instance=ExtResource( 6 )]
+[node name="HUD" parent="." index="6" instance=ExtResource( 5 )]
 
 
