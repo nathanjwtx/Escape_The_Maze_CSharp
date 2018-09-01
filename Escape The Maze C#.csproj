@@ -57,6 +57,7 @@
     <Compile Include="Levels\Level1\Level1.cs" />
     <Compile Include="Levels\Level2\Level2.cs" />
     <Compile Include="Levels\Level3\Level3.cs" />
+    <Compile Include="Levels\Level4\Level4.cs" />
     <Compile Include="Objects\Pickup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\EndScreen.cs" />

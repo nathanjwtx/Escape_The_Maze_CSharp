@@ -14,6 +14,7 @@ public class Level : Node2D
     private TileMap _walls;
     private TileMap _doors;
     private TileMap _enemies;
+    private TileMap _secrets;
     private Random _random;
     private int cellID;
     private Player _player;
@@ -23,7 +24,8 @@ public class Level : Node2D
     private PackedScene _pickupScene;
     private PackedScene _enemyScene;
     public int _enemyCount;
-    
+
+    #region Level Setup
     public override void _Ready()
     {
         _pickupScene = (PackedScene) GD.Load("res://Objects/Pickup.tscn");
@@ -34,6 +36,7 @@ public class Level : Node2D
         _ground = GetNode<TileMap>("Ground");
         _doors = GetNode<TileMap>("Doors");
         _enemies = GetNode<TileMap>("EnemySpawn");
+        _secrets = GetNode<TileMap>("Secrets");
         _random = new Random();
         _items.Hide();
         _enemies.Hide();
@@ -57,6 +60,7 @@ public class Level : Node2D
         _player.GetNode<Camera2D>("Camera2D").LimitRight = Convert.ToInt32(mapSize.End.x * cellSize.x + cellSize.x);
         _player.GetNode<Camera2D>("Camera2D").LimitBottom = Convert.ToInt32(mapSize.End.x * cellSize.x + cellSize.x);
     }
+    #endregion
 
     public void SpawnItems()
     {
