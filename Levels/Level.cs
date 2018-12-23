@@ -120,8 +120,11 @@ public class Level : Node2D
         {
             var startPoint = rand.Next(0, _spawnPoints.Count);
             Vector2 pos = _items.MapToWorld(_spawnPoints[startPoint]) + _items.CellSize / 2;
-            GD.Print(pos);
+//            GD.Print(pos);
             Enemy enemy = (Enemy) _enemyScene.Instance();
+
+            enemy.EnemySpeed = _random.Next(1, 7);
+            
             enemy.Position = pos;
             enemy.TileSize = Convert.ToInt32(_items.CellSize.x);
             AddChild(enemy);
