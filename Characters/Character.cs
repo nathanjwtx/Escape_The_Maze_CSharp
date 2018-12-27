@@ -10,6 +10,7 @@ public class Character : Area2D
     protected bool CanMove = true;
     protected string Facing = "right";
     private Tween _moveTween;
+    public int _speed;
 
     public Dictionary<string, Vector2> _moves = new Dictionary<string, Vector2>
     {
@@ -24,6 +25,8 @@ public class Character : Area2D
     public override void _Ready()
     {
         MakeRayCast();
+        _moveTween = GetNode<Tween>("MoveTween");
+        _moveTween.Start();
     }
 
     private void MakeRayCast()
@@ -37,30 +40,24 @@ public class Character : Area2D
         };
     }
     
-    public bool Move(string dir)
+    public bool Move(string dir, int speed = 3)
     {
         AnimationPlayer _player;
         _player = GetNode<AnimationPlayer>("AnimationPlayer");
-        _player.PlaybackSpeed = Speed;
+        _player.PlaybackSpeed = speed;
+//        _player.PlaybackSpeed = Speed;
         Facing = dir;
         if (Raycasts[Facing].IsColliding())
         {
+            GD.Print("collide");
             return false;
         }
 
         CanMove = false;
         _player.Play(Facing);
-        if (Name == "PlayerOne")
-        {
-            _moveTween = GetNode<Tween>("MoveTween");
-            _moveTween.InterpolateProperty(this, "position", Position, Position + _moves[Facing] * TileSize, 
-                1.0f / Speed, Tween.TransitionType.Sine, Tween.EaseType.InOut);
-            _moveTween.Start();   
-        }
-        else
-        {
-            Position = Position + _moves[Facing] * TileSize;   
-        }
+
+        _moveTween.InterpolateProperty(this, "position", Position, Position + _moves[Facing] * TileSize, 
+            1.0f / speed, Tween.TransitionType.Sine, Tween.EaseType.InOut);
         return true;
     }
 

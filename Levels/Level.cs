@@ -6,32 +6,45 @@ using Array = Godot.Array;
 
 public class Level : Node2D
 {
-    [Export] public PackedScene EnemyScene;
-    [Export] public PackedScene PickupScene;
+//    [Export] public PackedScene EnemyScene;
+//    [Export] public PackedScene PickupScene;
 
     private static TileMap _items;
     private TileMap _ground;
     private TileMap _walls;
     private TileMap _doors;
+    private TileMap _enemies;
+    private TileMap _secrets;
     private Random _random;
     private int cellID;
     private Player _player;
     private HUD _hud;
-    private Godot.Dictionary<string, Vector2> _doorVector2s = new Godot.Dictionary<string, Vector2>(); 
-    
+    private Godot.Dictionary<string, Vector2> _doorVector2s = new Godot.Dictionary<string, Vector2>();
+    private List<Vector2> _spawnPoints = new List<Vector2>();
+    private PackedScene _pickupScene;
+    private PackedScene _enemyScene;
+    public int _enemyCount;
+
+    #region Level Setup
     public override void _Ready()
     {
+        _pickupScene = (PackedScene) GD.Load("res://Objects/Pickup.tscn");
+        _enemyScene = (PackedScene) GD.Load("res://Characters/Enemies/Enemy.tscn");
         _hud = GetNode<HUD>("HUD");
         _player = GetNode<Player>("PlayerOne");
         _items = GetNode<TileMap>("Items");
         _ground = GetNode<TileMap>("Ground");
         _doors = GetNode<TileMap>("Doors");
+        _enemies = GetNode<TileMap>("EnemySpawn");
+        _secrets = GetNode<TileMap>("Secrets");
         _random = new Random();
         _items.Hide();
+        _enemies.Hide();
         SetCameraLimits();
         _walls = GetNode<TileMap>("Walls");
         
         SpawnItems();
+        SpawnEnemies(_enemyCount);
         _player.Connect("Dead", this, "GameOver");
         _player.Connect("RedKey", this, "_on_PlayerOne_RedKey");
         _player.Connect("GreenKey", this, "_on_PlayerOne_GreenKey");
@@ -47,6 +60,7 @@ public class Level : Node2D
         _player.GetNode<Camera2D>("Camera2D").LimitRight = Convert.ToInt32(mapSize.End.x * cellSize.x + cellSize.x);
         _player.GetNode<Camera2D>("Camera2D").LimitBottom = Convert.ToInt32(mapSize.End.x * cellSize.x + cellSize.x);
     }
+    #endregion
 
     public void SpawnItems()
     {
@@ -58,18 +72,12 @@ public class Level : Node2D
 
             switch (cellType)
             {
-                case "slime_spawn":
-                    var s = (Enemy) EnemyScene.Instance();
-                    s.Position = pos;
-                    s.TileSize = Convert.ToInt32(_items.CellSize.x);
-                    AddChild(s);
-                    break;
                 case "player_spawn":
                     _player.Position = pos;
                     _player.TileSize = 64;
                     break;
                 case "coin": case "key_red": case "star": case "key_green":
-                    Pickup p = (Pickup) PickupScene.Instance();
+                    Pickup p = (Pickup) _pickupScene.Instance();
                     p.Init(cellType, pos);
                     AddChild(p);
 
@@ -98,6 +106,29 @@ public class Level : Node2D
                     break;
             }
 
+        }
+    }
+
+    public void SpawnEnemies(int enemyCount)
+    {
+        Random rand = new Random();
+        foreach (Vector2 cell in _enemies.GetUsedCells())
+        {
+            _spawnPoints.Add(cell);
+        }
+        for (int i = enemyCount; i > 0; i--)
+        {
+            var startPoint = rand.Next(0, _spawnPoints.Count);
+            Vector2 pos = _items.MapToWorld(_spawnPoints[startPoint]) + _items.CellSize / 2;
+            GD.Print(pos);
+            Enemy enemy = (Enemy) _enemyScene.Instance();
+
+            enemy.EnemySpeed = _random.Next(1, 7);
+            
+            enemy.Position = pos;
+            enemy.TileSize = Convert.ToInt32(_items.CellSize.x);
+            AddChild(enemy);
+            _spawnPoints.Remove(_spawnPoints[startPoint]);
         }
     }
 

@@ -36,7 +36,7 @@ public class Pickup : Area2D
         _texture = (Texture) GD.Load(Textures[textType]);
         GetNode<Sprite>("PickupSprite").Texture = _texture;
         Position = pos;
-        if (textType == "coin")
+        if (textType == "coin")    
         {
             AddToGroup("Coins");
         }
