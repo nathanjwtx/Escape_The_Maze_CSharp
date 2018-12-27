@@ -16,3 +16,5 @@ Levels/Testing\.tscn
 Characters/Enemies/EnemyTest\.tscn
 
 Assets/\.DS_Store
+
+*.sln.DotSettings.user
