@@ -25,6 +25,8 @@ public class Character : Area2D
     public override void _Ready()
     {
         MakeRayCast();
+        _moveTween = GetNode<Tween>("MoveTween");
+        _moveTween.Start();
     }
 
     private void MakeRayCast()
@@ -53,17 +55,9 @@ public class Character : Area2D
 
         CanMove = false;
         _player.Play(Facing);
-        _speed = speed;
 
-        _moveTween = GetNode<Tween>("MoveTween");
-            _moveTween.InterpolateProperty(this, "position", Position, Position + _moves[Facing] * TileSize, 
-                1.0f / _speed, Tween.TransitionType.Sine, Tween.EaseType.InOut);
-            _moveTween.Start();   
-//        }
-//        else
-//        {
-//            Position = Position + _moves[Facing] * TileSize;   
-//        }
+        _moveTween.InterpolateProperty(this, "position", Position, Position + _moves[Facing] * TileSize, 
+            1.0f / speed, Tween.TransitionType.Sine, Tween.EaseType.InOut);
         return true;
     }
 

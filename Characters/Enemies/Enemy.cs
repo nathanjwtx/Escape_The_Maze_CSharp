@@ -21,6 +21,7 @@ public class Enemy : Character
             _moveKeys.Add(movesKey);
         }
 
+        _speed = _random1.Next(2, 6);
         Facing = _moveKeys[_random1.Next(0, _moveKeys.Count)];
         _spawn.Start();
         GD.Print(EnemySpeed);
@@ -32,13 +33,13 @@ public class Enemy : Character
         if (CanMove)
         {
             // might need to adjust the random ocurence of direction changing
-            if (Move(Facing, EnemySpeed) == false || _random1.Next(0, 11) > 5)
+            if (Move(Facing, _speed) == false || _random1.Next(0, 11) > 5)
             {
                 Facing = _moveKeys[_random1.Next(0, 4)];
-                CanMove = true;
+//                CanMove = true;
             }
 
-            CanMove = false;
+//            CanMove = false;
         }   
     }
     
