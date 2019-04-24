@@ -2,7 +2,7 @@ using Godot;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Array = Godot.Array;
+using Array = Godot.Collections.Array;
 
 public class Level : Node2D
 {
@@ -19,7 +19,7 @@ public class Level : Node2D
     private int cellID;
     private Player _player;
     private HUD _hud;
-    private Godot.Dictionary<string, Vector2> _doorVector2s = new Godot.Dictionary<string, Vector2>();
+    private Dictionary<string, Vector2> _doorVector2s = new Dictionary<string, Vector2>();
     private List<Vector2> _spawnPoints = new List<Vector2>();
     private PackedScene _pickupScene;
     private PackedScene _enemyScene;
